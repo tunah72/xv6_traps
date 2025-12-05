@@ -119,12 +119,32 @@ void
 panic(char *s)
 {
   pr.locking = 0;
+  backtrace();
   printf("panic: ");
   printf(s);
   printf("\n");
   panicked = 1; // freeze uart output from other CPUs
   for(;;)
     ;
+}
+
+void
+backtrace(void)
+{
+  uint64 fp = r_fp();
+  uint64 stack_bottom = PGROUNDDOWN(fp);  // đáy của kernel stack page
+
+  printf("backtrace:\n");
+
+  while (fp >= stack_bottom + 16 && fp < stack_bottom + PGSIZE) {
+    uint64 ra = *(uint64*)(fp - 8);        // return address
+    printf("  %p\n", ra);            
+
+    uint64 prev_fp = *(uint64*)(fp - 16);  // saved fp
+    if (prev_fp <= fp || prev_fp >= stack_bottom + PGSIZE)
+      break;
+    fp = prev_fp;
+  }
 }
 
 void
