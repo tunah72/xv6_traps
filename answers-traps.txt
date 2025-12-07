@@ -1,0 +1,6 @@
+Q1: a2
+Q2: The compiler inlined f and g into main.
+Q3: 0x630
+Q4: 0x38
+Q5: HE110 World. i should be 0x726c6400. 57616 doesn't change.
+Q6: It prints a garbage value (or previous value) from register a2 because printf expects an argument there but none was provided.
