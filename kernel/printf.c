@@ -138,7 +138,7 @@ backtrace(void)
 
   while (fp >= stack_bottom + 16 && fp < stack_bottom + PGSIZE) {
     uint64 ra = *(uint64*)(fp - 8);        // return address
-    printf("  %p\n", ra);            
+    printf("%p\n", ra);            
 
     uint64 prev_fp = *(uint64*)(fp - 16);  // saved fp
     if (prev_fp <= fp || prev_fp >= stack_bottom + PGSIZE)
